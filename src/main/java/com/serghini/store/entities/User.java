@@ -1,5 +1,6 @@
-package com.codewithmosh.store.entities;
+package com.serghini.store.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
