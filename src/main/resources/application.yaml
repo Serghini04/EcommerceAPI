@@ -5,5 +5,15 @@ spring:
     url: jdbc:mysql://localhost:3306/store_api?createDatabaseIfNotExist=true
     username: root
     password: MyPassword!
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
+    open-in-view: false
+
+#  docker run -d \
+#  --name mysql-store \
+#  -e MYSQL_ROOT_PASSWORD=MyPassword! \
+#  -e MYSQL_DATABASE=store_api \
+#  -v mysql_store_data:/var/lib/mysql \
+#  -p 3306:3306 \
+#  mysql:8
