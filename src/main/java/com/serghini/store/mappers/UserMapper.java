@@ -7,7 +7,8 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-	@Mapping(target = "createdAt", expression="java(java.time.LocalDateTime.now())")
-	UserDto toDto(User user);
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "name")
+    @Mapping(target = "email", source = "email")
+    UserDto toDto(User user);
 }
-
