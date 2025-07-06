@@ -27,7 +27,7 @@ public class UserController {
 
 	@GetMapping("/users")
 	
-	public Iterable<UserDto>	getAllUsers(@RequestHeader(), @RequestParam(defaultValue="") String sort) {
+	public Iterable<UserDto>	getAllUsers(@), @RequestParam(defaultValue="") String sort) {
 		if(!Set.of("name", "email").contains(sort))
 			sort = "name";
 		return userRepository.findAll(Sort.by(sort))
