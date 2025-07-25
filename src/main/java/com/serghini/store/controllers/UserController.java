@@ -1,12 +1,10 @@
 package com.serghini.store.controllers;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-
 import com.serghini.store.dtos.ChangePasswordRequest;
 import com.serghini.store.dtos.RegisterUserRequest;
 import com.serghini.store.dtos.UpdateUserRequest;
@@ -14,13 +12,9 @@ import com.serghini.store.dtos.UserDto;
 import com.serghini.store.entities.User;
 import com.serghini.store.mappers.UserMapper;
 import com.serghini.store.repositories.UserRepository;
-
 import lombok.AllArgsConstructor;
-
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import jakarta.validation.Valid;
 
 @RestController
