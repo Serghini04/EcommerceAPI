@@ -24,12 +24,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import jakarta.validation.Valid;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @RestController
 @AllArgsConstructor
 public class UserController {
 	private final UserRepository userRepository;
 	private	final UserMapper userMapper;
+	private final PasswordEncoder passwordEncoder;
 
 	@GetMapping("/users")
 	
@@ -59,6 +61,7 @@ public class UserController {
 		}
 		
 		var user = userMapper.toEntity(request);
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userRepository.save(user);
 		var userDto = userMapper.toDto(user);
 		var uri = uriBuilder.path("/users/{id}").buildAndExpand(userDto.getId()).toUri();
