@@ -11,9 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import io.jsonwebtoken.security.Password;
-
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -24,13 +21,14 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain  securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(c -> c.requestMatchers("carts/**").permitAll()
-                                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                                        .anyRequest().authenticated());
+            .authorizeHttpRequests(c -> c
+                .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                .anyRequest().authenticated()
+            );
         return http.build();
     }
 }
