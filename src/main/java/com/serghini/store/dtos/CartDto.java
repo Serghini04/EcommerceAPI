@@ -4,9 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.Vector;
-
-import com.serghini.store.entities.CartItem;
 
 import lombok.Data;
 
