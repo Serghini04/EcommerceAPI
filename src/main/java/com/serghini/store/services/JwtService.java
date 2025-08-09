@@ -2,53 +2,57 @@ package com.serghini.store.services;
 
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.serghini.store.config.JwtConfig;
+import com.serghini.store.controllers.Jwt;
 import com.serghini.store.entities.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class JwtService {
-    
-    @Value("${jwt.secret}")
-    private String secret;
-    private long tokenExpiration = 86400 * 1000; // millisec => 1 day
-    
-    public String generateToken(User user) {
-        return Jwts.builder()
-            .subject(user.getId().toString())
-            .issuedAt(new Date())
-            .expiration(new Date(System.currentTimeMillis() + tokenExpiration))
-            .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
-            .claim("email", user.getEmail())
-            .claim("name", user.getName())
-            .compact();
-    }
+    private final JwtConfig jwtConfig;
 
-    public Claims   getClaims(String token) {
+    private Claims   getClaims(String token) {
         return Jwts.parser()
-                            .verifyWith(Keys.hmacShaKeyFor(secret.getBytes()))
+                            .verifyWith(jwtConfig.getSecretKey())
                             .build()
                             .parseSignedClaims(token)
                             .getPayload();
     }
 
-    public boolean validateToken(String token) {
+    public Jwt generateToken(User user, long tokenExpiration) {
+        var claims = Jwts.claims()
+                    .subject(user.getId().toString())
+                    .add("email", user.getEmail())
+                    .add("name", user.getName())
+                    .add("role", user.getRole())
+                    .issuedAt(new Date())
+                    .expiration(new Date(System.currentTimeMillis() + 1000 * tokenExpiration))
+                    .build();
+        return new Jwt(claims, jwtConfig.getSecretKey());
+    }
+
+    public Jwt generateAccessToken(User user) {
+       return generateToken(user, jwtConfig.getAccessTokenExpiration());
+    }
+
+    public Jwt generateRefreshToken(User user) {
+        return generateToken(user, jwtConfig.getRefreshTokenExpiration());
+    }
+
+    public Jwt parseToken(String token) {
         try {
             var claims = getClaims(token);
-            return claims.getExpiration().after(new Date());
-        }
-        catch (JwtException e) {
-            return false;
+            return new Jwt(claims, jwtConfig.getSecretKey());
+        } catch (JwtException e) {
+            return null;
         }
     }
 
-    public String getIdFormToken(String token) {
-        return getClaims(token).getSubject();
-    }
 }

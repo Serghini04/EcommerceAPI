@@ -9,9 +9,10 @@ spring:
   jpa:
     show-sql: true
     open-in-view: false
+  jwt:
+    secret: ${JWT_SECRET}
+    accessTokenExpiration: 7200 # 2h
+    refreshTokenExpiration: 604800 # 7days
 
 server:
   port: 9999
-
-jwt:
-  secret: ${JWT_SECRET}
