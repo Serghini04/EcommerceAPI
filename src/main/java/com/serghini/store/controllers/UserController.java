@@ -9,6 +9,7 @@ import com.serghini.store.dtos.ChangePasswordRequest;
 import com.serghini.store.dtos.RegisterUserRequest;
 import com.serghini.store.dtos.UpdateUserRequest;
 import com.serghini.store.dtos.UserDto;
+import com.serghini.store.entities.Role;
 import com.serghini.store.entities.User;
 import com.serghini.store.mappers.UserMapper;
 import com.serghini.store.repositories.UserRepository;
@@ -61,6 +62,7 @@ public class UserController {
 
 		var user = userMapper.toEntity(request);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setRole(Role.USER);
 		userRepository.save(user);
 		var userDto = userMapper.toDto(user);
 		var uri = uriBuilder.path("/users/{id}").buildAndExpand(userDto.getId()).toUri();

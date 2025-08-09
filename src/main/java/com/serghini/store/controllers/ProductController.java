@@ -51,8 +51,6 @@ public class ProductController {
 
     @PostMapping("/products")
     public ResponseEntity<ProductDto>  createProduct(@RequestBody ProductDto request, UriComponentsBuilder uriBuilder) {
-        
-        System.out.println("Fuckkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk it!!!!!!!!!!!!!!");
         var category = categoryRepository.findById(request.getCategoryId()).orElse(null);
         if (category == null)
             return ResponseEntity.badRequest().build();
