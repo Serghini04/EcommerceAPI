@@ -35,7 +35,6 @@ public class UserController {
 	private final PasswordEncoder passwordEncoder;
 
 	@GetMapping("/users")
-	
 	public Iterable<UserDto>	getAllUsers(@RequestParam(defaultValue="") String sort) {
 		if(!Set.of("name", "email").contains(sort))
 			sort = "name";
