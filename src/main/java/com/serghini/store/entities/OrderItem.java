@@ -11,11 +11,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 
 @Entity
 @Data
 @Table(name="order_items")
+@EqualsAndHashCode(exclude = {"order"})
 public class OrderItem {
     
     @Id
@@ -36,4 +38,7 @@ public class OrderItem {
 
     @Column(name="total_price")
     private BigDecimal totalPrice; 
+
+    @Column(name="unit_price")
+    private BigDecimal unitPrice;
 }

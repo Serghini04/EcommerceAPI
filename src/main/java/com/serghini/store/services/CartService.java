@@ -1,7 +1,11 @@
 package com.serghini.store.services;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
+
 import org.springframework.stereotype.Service;
+
 import com.serghini.store.dtos.CartDto;
 import com.serghini.store.dtos.CartItemDto;
 import com.serghini.store.entities.Cart;
@@ -60,7 +64,18 @@ public class CartService {
         return cartMapper.toDto(cart);
     }
 
-    public Void removeItem(UUID cartId) {
+    public List<CartDto>  getCarts() {
+        List<CartDto> carts = new LinkedList<CartDto>();
+
+        cartRepository.findAll().forEach(cart -> {
+            carts.add(cartMapper.toDto(cart));
+        });
+        if (carts.isEmpty())
+            throw new CartNotFoundException();
+        return carts;
+    }
+
+    public Void removeItems(UUID cartId) {
         var cart = cartRepository.findById(cartId).orElse(null);
         if (cart == null)
             throw new CartNotFoundException();

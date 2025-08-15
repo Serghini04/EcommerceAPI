@@ -1,7 +1,7 @@
 package com.serghini.store.entities;
 
 public enum OrderStatus {
-    PINDING,
+    PENDING,
     PAID,
     FAILED,
     CANCELED
