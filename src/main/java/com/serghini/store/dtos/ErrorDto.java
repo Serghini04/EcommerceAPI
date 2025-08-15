@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class CheckoutResponse {
-    private Long orderId;
+public class ErrorDto {
+    private String error;
 }

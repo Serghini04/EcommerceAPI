@@ -1,5 +1,6 @@
 package com.serghini.store.controllers;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -34,14 +35,14 @@ public class CartController {
     private final CartService cartService;
 
     @PostMapping("/carts")
-    @Operation(summary="Adds a product to the cart.")
     public ResponseEntity<CartDto> createCart(UriComponentsBuilder uriBuilder) {
         CartDto cartDto = cartService.createCart();
         var uri = uriBuilder.path("/carts/{id}").buildAndExpand(cartDto.getId()).toUri();
         return ResponseEntity.created(uri).body(cartDto);
     }
-
+    
     @PostMapping("/carts/{cartId}/items")
+    @Operation(summary="Adds a product to the cart.")
     public ResponseEntity<?>  addToCart(@PathVariable UUID cartId, @RequestBody AddItemToCartRequest request) {
         var cartItemDto = cartService.addToCart(cartId, request.getProductId());
         return ResponseEntity.ok(cartItemDto);
@@ -53,6 +54,11 @@ public class CartController {
         return ResponseEntity.ok(item);
     }
     
+
+    @GetMapping("/carts")
+    public ResponseEntity<List<CartDto>> getCarts() {
+        return ResponseEntity.ok(cartService.getCarts());
+    }
 
     @GetMapping("/carts/{cartId}")
     public ResponseEntity<CartDto> getCart(@PathVariable UUID cartId) {

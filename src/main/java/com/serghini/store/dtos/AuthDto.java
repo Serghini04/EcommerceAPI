@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class AuthDto {
     @Email
-    @NotBlank(message="Email is Required1")
+    @NotBlank(message="Email is Required")
     private String email;
 
     @NotBlank(message="Password is Required")

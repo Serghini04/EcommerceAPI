@@ -5,10 +5,10 @@ CREATE TABLE orders (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
     total_price DECIMAL(10, 2) NOT NULL,
     constraint orders_users_id_fk
-        FOREIGN KEY (customer_id) REFERENCES user (user_id)
-)
+        FOREIGN KEY (customer_id) REFERENCES user (id)
+);
 
-CREATE TABLE ORDER_ITEMS (
+CREATE TABLE order_items (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     order_id BIGINT NOT NULL,
     product_id BIGINT NOT NULL,
@@ -19,4 +19,4 @@ CREATE TABLE ORDER_ITEMS (
         FOREIGN KEY (order_id) REFERENCES orders (id),
     CONSTRAINT order_item_products_id_fk
         FOREIGN KEY (product_id) REFERENCES products (id)
-)
+);

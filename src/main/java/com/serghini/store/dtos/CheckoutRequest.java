@@ -8,6 +8,6 @@ import lombok.Data;
 
 @Data
 public class CheckoutRequest {
-    @NotBlank(message = "CartId is required")
+    @NotNull(message = "CartId is required")
     private UUID cartId;
 }
