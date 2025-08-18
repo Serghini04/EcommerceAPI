@@ -12,13 +12,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -47,22 +47,17 @@ public class Order {
     @Column(name="total_price")
     private BigDecimal  totalPrice;
     
-    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderItem> items = new LinkedHashSet<>();
 
 
-    private Order   fromCart(Cart cart, User customer) {
+    public static Order   fromCart(Cart cart, User customer) {
         var order = new Order();
         order.setTotalPrice(cart.getTotalPrice());
         order.setStatus(OrderStatus.PENDING);
         order.setCustomer(customer);
         cart.getItems().forEach(item -> {
-            var orderItem = new OrderItem();
-            orderItem.setOrder(order);
-            orderItem.setProduct(item.getProduct());
-            orderItem.setQuantity(item.getQuantity());
-            orderItem.setTotalPrice(item.getTotalPrice());
-            orderItem.setUnitPrice(item.getProduct().getPrice());
+            var orderItem = new OrderItem(order, item.getProduct(), item.getQuantity());
             order.getItems().add(orderItem);
         });
         return order;

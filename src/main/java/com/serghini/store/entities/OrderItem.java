@@ -20,6 +20,14 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(exclude = {"order"})
 public class OrderItem {
     
+    public OrderItem(Order order, Product product, Integer quantity) {
+        this.order = order;
+        this.product = product;
+        this.quantity = quantity;
+        this.unitPrice = product.getPrice();
+        this.totalPrice = this.unitPrice.multiply(BigDecimal.valueOf(quantity));
+    }
+
     @Id
     @Column(name="id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -34,7 +42,7 @@ public class OrderItem {
     private Product product;
 
     @Column(name="quantity")
-    private long quantity;
+    private Integer quantity;
 
     @Column(name="total_price")
     private BigDecimal totalPrice; 

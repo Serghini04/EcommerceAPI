@@ -35,9 +35,16 @@ public class CheckoutController {
             return ResponseEntity.badRequest().body(Map.of("error", "Cart not found"));
         if (cart.getItems().isEmpty())
             return ResponseEntity.badRequest().body(Map.of("error", "Cart is empty!"));
-        var order = cart.fromCart();
-        orderRepository.save(order);
+        var order = new Order();
+        order.setTotalPrice(cart.getTotalPrice());
+        order.setStatus(OrderStatus.PENDING);
+        order.setCustomer(authService.getCurrentUser());
+        cart.getItems().forEach(item -> {
+            var orderItem = new OrderItem(order, item.getProduct(), item.getQuantity());
+            order.getItems().add(orderItem);
+        });
+        var savedOrder = orderRepository.save(order);
         cartService.removeItems(request.getCartId());
-        return ResponseEntity.ok(new CheckoutResponse(order.getId()));
+        return ResponseEntity.ok(new CheckoutResponse(savedOrder.getId()));
     }
 }

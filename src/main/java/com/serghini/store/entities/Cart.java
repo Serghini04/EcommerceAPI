@@ -6,8 +6,6 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import org.springframework.http.ResponseEntity;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -60,6 +58,10 @@ public class Cart {
 
     public void clear() {
         items.clear();
+    }
+
+    public boolean isEmpty() {
+        return this.items.isEmpty();
     }
 
 }

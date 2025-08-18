@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.serghini.store.dtos.ErrorDto;
+import com.serghini.store.exceptions.CartEmptyException;
+import com.serghini.store.exceptions.CartNotFoundException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -25,5 +27,10 @@ public class GlobalExceptionHandler {
 			errors.put(error.getField(), error.getDefaultMessage());
 		});
 		return ResponseEntity.badRequest().body(errors);
+	}
+
+	@ExceptionHandler({CartNotFoundException.class, CartEmptyException.class})
+	public ResponseEntity<?> handleCartException(Exception ex) {
+		return ResponseEntity.badRequest().body(ex.getMessage());
 	}
 }
