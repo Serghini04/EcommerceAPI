@@ -68,7 +68,7 @@ public class CartController {
 
     @DeleteMapping("/carts/{cartId}/items")
     public ResponseEntity<Void> removeItem(@PathVariable UUID cartId) {
-        cartService.removeItem(cartId);
+        cartService.removeItems(cartId);
         return ResponseEntity.noContent().build();
     }
 
