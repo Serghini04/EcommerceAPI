@@ -3,8 +3,8 @@
 # This script sets up the environment for the EcommerceAPI project.
 # It installs Docker, Java 17, and starts a MySQL 8 container.
 
-# sudo apt update
-# sudo apt install openjdk-17-jdk -y
+sudo apt update
+sudo apt install openjdk-17-jdk -y
 
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 export PATH=$JAVA_HOME/bin:$PATH
