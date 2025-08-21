@@ -8,10 +8,9 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
 import com.serghini.store.dtos.ErrorDto;
-import com.serghini.store.exceptions.CartEmptyException;
-import com.serghini.store.exceptions.CartNotFoundException;
+import com.serghini.store.exceptions.*;
+import org.springframework.http.HttpStatus;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -32,5 +31,15 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler({CartNotFoundException.class, CartEmptyException.class})
 	public ResponseEntity<?> handleCartException(Exception ex) {
 		return ResponseEntity.badRequest().body(ex.getMessage());
+	}
+
+	@ExceptionHandler(OrderNotFoundException.class)
+	public ResponseEntity<ErrorDto> handleOrderNotFoundException(OrderNotFoundException ex) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(ex.getMessage()));
+	}
+
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<ErrorDto> handleAccessDeniedException(AccessDeniedException ex) {
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorDto(ex.getMessage()));
 	}
 }

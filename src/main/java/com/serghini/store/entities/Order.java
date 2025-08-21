@@ -47,7 +47,7 @@ public class Order {
     @Column(name="total_price")
     private BigDecimal  totalPrice;
     
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+     @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch= FetchType.EAGER)
     private Set<OrderItem> items = new LinkedHashSet<>();
 
 
@@ -61,5 +61,9 @@ public class Order {
             order.getItems().add(orderItem);
         });
         return order;
+    }
+
+    public boolean isPlacedBy(User user) {
+        return this.customer.getId().equals(user.getId());
     }
 }

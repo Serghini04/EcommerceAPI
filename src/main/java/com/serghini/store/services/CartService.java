@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.serghini.store.controllers.AddItemToCartRequest;
 import com.serghini.store.dtos.CartDto;
 import com.serghini.store.dtos.CartItemDto;
 import com.serghini.store.entities.Cart;
@@ -32,14 +33,14 @@ public class CartService {
         return cartMapper.toDto(cart);
     }
 
-    public CartItemDto  addToCart(UUID cartId, Long productId) {
+    public CartItemDto addToCart(UUID cartId, AddItemToCartRequest request) {
         var cart = cartRepository.findById(cartId).orElse(null);
         if (cart == null)
             throw new CartNotFoundException();
-        Product product = productRepository.findById(productId).orElse(null);
+        Product product = productRepository.findById(request.getProductId()).orElse(null);
         if (product == null)
             throw new ProductNotFoundException();
-        CartItem cartItem = cart.addItem(product);
+        CartItem cartItem = cart.addItem(product, request.getQuantity());
         cartRepository.save(cart);
         return cartMapper.toDto(cartItem);
     }
