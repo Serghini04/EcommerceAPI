@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 @Table(name="order_items")
 @EqualsAndHashCode(exclude = {"order"})
 public class OrderItem {
+    public OrderItem() {
+        
+    }
     
     public OrderItem(Order order, Product product, Integer quantity) {
         this.order = order;

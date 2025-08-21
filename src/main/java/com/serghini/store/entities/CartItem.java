@@ -17,6 +17,10 @@ import lombok.Setter;
 @Entity
 @Table(name="cart_items")
 public class CartItem {
+    public CartItem() {
+        // Default constructor required by JPA
+    }
+
     @Id
     @jakarta.persistence.GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")

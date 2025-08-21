@@ -3,6 +3,7 @@
 # This script sets up the environment for the EcommerceAPI project.
 # It installs Docker, Java 17, and starts a MySQL 8 container.
 
+set -e
 sudo apt update
 sudo apt install openjdk-17-jdk -y
 
@@ -18,7 +19,15 @@ else
 fi
 
 # Start MySQL container if not already running
-if ! docker ps --format '{{.Names}}' | grep -q '^mysql-store$'; then
+if docker ps -a --format '{{.Names}}' | grep -q '^mysql-store$'; then
+  if [ "$(docker inspect -f '{{.State.Running}}' mysql-store)" != "true" ]; then
+    echo "Starting existing MySQL container 'mysql-store'..."
+    docker start mysql-store
+  else
+    echo "MySQL container 'mysql-store' is already running."
+  fi
+else
+  echo "Creating and starting new MySQL container 'mysql-store'..."
   docker run -d \
     --name mysql-store \
     -e MYSQL_ROOT_PASSWORD=MyPassword! \
@@ -26,8 +35,6 @@ if ! docker ps --format '{{.Names}}' | grep -q '^mysql-store$'; then
     -v mysql_store_data:/var/lib/mysql \
     -p 3306:3306 \
     mysql:8
-else
-  echo "MySQL container 'mysql-store' is already running."
 fi
 
 echo "Docker and Java 17 installed successfully."
