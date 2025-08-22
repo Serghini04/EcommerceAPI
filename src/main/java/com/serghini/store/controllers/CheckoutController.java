@@ -16,6 +16,7 @@ import com.serghini.store.repositories.CartRepository;
 import com.serghini.store.repositories.OrderRepository;
 import com.serghini.store.services.AuthService;
 import com.serghini.store.services.CartService;
+import com.serghini.store.services.CheckoutService;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -23,28 +24,11 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 public class CheckoutController {
-    private CartRepository cartRepository;
-    private CartService cartService;
-    private AuthService authService;
-    private OrderRepository orderRepository;
+    private CheckoutService checkoutService;
 
     @PostMapping("/checkout")
     public ResponseEntity<?> checkout(@Valid @RequestBody CheckoutRequest request) {
-        var cart = cartRepository.findById(request.getCartId()).orElse(null);
-        if (cart == null)
-            return ResponseEntity.badRequest().body(Map.of("error", "Cart not found"));
-        if (cart.getItems().isEmpty())
-            return ResponseEntity.badRequest().body(Map.of("error", "Cart is empty!"));
-        var order = new Order();
-        order.setTotalPrice(cart.getTotalPrice());
-        order.setStatus(OrderStatus.PENDING);
-        order.setCustomer(authService.getCurrentUser());
-        cart.getItems().forEach(item -> {
-            var orderItem = new OrderItem(order, item.getProduct(), item.getQuantity());
-            order.getItems().add(orderItem);
-        });
-        var savedOrder = orderRepository.save(order);
-        cartService.removeItems(request.getCartId());
-        return ResponseEntity.ok(new CheckoutResponse(savedOrder.getId()));
+        var response = checkoutService.checkout(request.getCartId());
+        return ResponseEntity.ok(response);
     }
 }
