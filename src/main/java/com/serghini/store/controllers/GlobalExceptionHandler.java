@@ -28,9 +28,14 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.badRequest().body(errors);
 	}
 
-	@ExceptionHandler({CartNotFoundException.class, CartEmptyException.class})
-	public ResponseEntity<?> handleCartException(Exception ex) {
-		return ResponseEntity.badRequest().body(ex.getMessage());
+	@ExceptionHandler(CartNotFoundException.class)
+	public ResponseEntity<?> handleCartException() {
+		return ResponseEntity.badRequest().body(new ErrorDto("Cart Not Found."));
+	}
+
+	@ExceptionHandler(CartEmptyException.class)
+	public ResponseEntity<?> handleCartEmptyException() {
+		return ResponseEntity.badRequest().body(new ErrorDto("Cart Is Empty."));
 	}
 
 	@ExceptionHandler(OrderNotFoundException.class)
