@@ -9,15 +9,12 @@ import com.serghini.store.dtos.CheckoutResponse;
 import com.serghini.store.entities.Order;
 import com.serghini.store.exceptions.CartEmptyException;
 import com.serghini.store.exceptions.CartNotFoundException;
+import com.serghini.store.exceptions.PaymentException;
 import com.serghini.store.repositories.CartRepository;
 import com.serghini.store.repositories.OrderRepository;
 import com.stripe.exception.StripeException;
-import com.stripe.model.checkout.Session;
-import com.stripe.param.checkout.SessionCreateParams;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 
 
 @Service
@@ -28,8 +25,9 @@ public class CheckoutService {
     private final OrderRepository orderRepository;
     private final CartRepository cartRepository;
     private final AuthService authService;
+    private final PaymentGateway paymentGateway;
 
-    public CheckoutResponse checkout(UUID cartId) throws StripeException {
+    public CheckoutResponse checkout(UUID cartId) throws PaymentException {
         var cart = cartRepository.findById(cartId).orElse(null);
         if (cart == null)
             throw new CartNotFoundException();
@@ -37,13 +35,11 @@ public class CheckoutService {
             throw new CartEmptyException();
         var order = Order.fromCart(cart, authService.getCurrentUser());
         orderRepository.save(order);
-
-        // Create a checkout session 
         try {
-    
+            var session = paymentGateway.createCheckoutSession(order);
             cartService.removeItems(cartId);
-            return new CheckoutResponse(order.getId(), session.getUrl());
-        } catch (StripeException e) {
+            return new CheckoutResponse(order.getId(), session.getCheckoutUrl());
+        } catch (PaymentException e) {
             System.out.println(e.getMessage());
             orderRepository.delete(order);
             throw e;

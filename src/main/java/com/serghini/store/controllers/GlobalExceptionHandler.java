@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.serghini.store.dtos.ErrorDto;
 import com.serghini.store.exceptions.*;
+
+import io.micrometer.core.ipc.http.HttpSender.Response;
+
 import org.springframework.http.HttpStatus;
 
 @ControllerAdvice
@@ -46,5 +49,10 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(AccessDeniedException.class)
 	public ResponseEntity<ErrorDto> handleAccessDeniedException(AccessDeniedException ex) {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorDto(ex.getMessage()));
+	}
+
+	@ExceptionHandler(PaymentException.class)
+	public ResponseEntity<ErrorDto> handelPaymentException() {
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDto("Paymet creating a checkout session"));
 	}
 }

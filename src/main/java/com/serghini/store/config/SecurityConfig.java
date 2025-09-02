@@ -1,7 +1,5 @@
 package com.serghini.store.config;
 
-import java.nio.file.AccessDeniedException;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,11 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import com.serghini.store.entities.Role;
 import com.serghini.store.filters.JwtAuthenticationFilter;
-
-import io.jsonwebtoken.security.Request;
 import lombok.AllArgsConstructor;
 
 @Configuration
@@ -52,7 +47,6 @@ public class SecurityConfig {
                         response.setStatus(HttpStatus.FORBIDDEN.value()));
                 }
             );
-        
             return http.build();
     }
 }
