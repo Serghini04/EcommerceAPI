@@ -1,3 +1,24 @@
+# 🏰 Architecture
+
+```mermaid
+graph TB
+	User[🧑‍💻 User] -->|REST| Backend[🛒 Spring Boot API]
+	Backend -->|JDBC| MySQL[(🗄️ MySQL DB)]
+	Backend -->|Stripe API| Stripe[💳 Stripe]
+	Backend -->|Flyway| Migration[(📦 Flyway Migrations)]
+	Backend -->|Swagger| Docs[📚 Swagger UI]
+	Backend -->|Docker| Compose[🐳 Docker Compose]
+
+	%% Volumes outside Docker Network
+	dbVolume[(🧊 mysql-volume)]
+	Backend --> dbVolume
+	MySQL --> dbVolume
+
+	subgraph Docker_Network["🐳 Docker Network"]
+		Backend
+		MySQL
+	end
+```
 # EcommerceAPI
 
 A modern, container-ready backend for e-commerce platforms, built with Spring Boot, Stripe integration, and robust security. Designed for rapid deployment, scalability, and developer productivity.
