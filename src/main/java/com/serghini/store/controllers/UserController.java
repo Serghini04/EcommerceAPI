@@ -26,15 +26,19 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @AllArgsConstructor
+@Tag(name="Users", description="Operations related to users")
 public class UserController {
 	private final UserRepository userRepository;
 	private	final UserMapper userMapper;
 	private final PasswordEncoder passwordEncoder;
 
 	@GetMapping("/users")
+	@Operation(summary="Retrieves a list of all users.")
 	public Iterable<UserDto>	getAllUsers(@RequestParam(defaultValue="") String sort) {
 		if(!Set.of("name", "email").contains(sort))
 			sort = "name";
@@ -45,6 +49,7 @@ public class UserController {
 	}
 
 	@GetMapping("/users/{id}")
+	@Operation(summary="Retrieves a user by their ID.")
 	public ResponseEntity<UserDto> getUserById(@PathVariable long id) {
 		User user = userRepository.findById(id).orElse(null);
 		if (user == null)
@@ -54,6 +59,7 @@ public class UserController {
 
 	
     @PostMapping("/users")
+	@Operation(summary="Registers a new user.")
     public  ResponseEntity<?> createUser(@Valid @RequestBody RegisterUserRequest request, UriComponentsBuilder uriBuilder) {
 		
 		if (userRepository.existsByEmail(request.getEmail()))
@@ -69,6 +75,7 @@ public class UserController {
     }
 
 	@PutMapping("/users/{id}")
+	@Operation(summary="Updates an existing user by their ID.")
 	public ResponseEntity<UserDto>	updateUser(@PathVariable(name = "id") Long id, @RequestBody UpdateUserRequest request) {
 		User user = userRepository.findById(id).orElse(null);
 
@@ -80,6 +87,7 @@ public class UserController {
 	}
 
 	@DeleteMapping("/users/{id}")
+	@Operation(summary="Deletes a user by their ID.")
 	public ResponseEntity<Void>	deleteUser(@PathVariable(name = "id") Long id) {
 		User	user = userRepository.findById(id).orElse(null);
 		if (user == null)
@@ -89,6 +97,7 @@ public class UserController {
 	}
 
 	@PostMapping("/users/{id}/change-password")
+	@Operation(summary="Changes the password of a user.")
 	public ResponseEntity<Void>	changePassword(@PathVariable(name = "id") Long id, @RequestBody ChangePasswordRequest request) {
 		User	user = userRepository.findById(id).orElse(null);
 

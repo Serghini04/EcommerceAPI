@@ -18,17 +18,21 @@ import com.serghini.store.entities.Product;
 import com.serghini.store.mappers.ProductMapper;
 import com.serghini.store.repositories.CategoryRepository;
 import com.serghini.store.repositories.ProductRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
+@Tag(name="Products", description="Operations related to products")
 public class ProductController {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
 
-    @GetMapping("/products") 
+    @GetMapping("/products")
+    @Operation(summary="Retrieves a list of all products, optionally filtered by category.")
     public List<ProductDto> getAllProducts(@RequestParam(name="categoryId", required=false) Byte categoryId, @RequestHeader(required=false, name="x-auth-token") String authToken) {
         List<Product> products;
         System.out.print(authToken);
@@ -42,6 +46,7 @@ public class ProductController {
     }
 
     @GetMapping("/products/{id}")
+    @Operation(summary="Retrieves the details of a specific product by its ID.")
     public ResponseEntity<ProductDto>  getProductbyId(@PathVariable Long id) {
         Product product = productRepository.findById(id).orElse(null);
         if (product == null)
@@ -50,6 +55,7 @@ public class ProductController {
     }
 
     @PostMapping("/products")
+    @Operation(summary="Creates a new product.")
     public ResponseEntity<ProductDto>  createProduct(@RequestBody ProductDto request, UriComponentsBuilder uriBuilder) {
         var category = categoryRepository.findById(request.getCategoryId()).orElse(null);
         if (category == null)
@@ -65,6 +71,7 @@ public class ProductController {
     }
 
     @PutMapping("/products/{id}")
+    @Operation(summary="Updates an existing product by its ID.")
     public ResponseEntity<ProductDto> updateProduct(@PathVariable(name = "id") Long id, @RequestBody ProductDto request) {
         var category = categoryRepository.findById(request.getCategoryId()).orElse(null);
         if (category == null)
@@ -81,6 +88,7 @@ public class ProductController {
     }
     
     @DeleteMapping("/products/{id}")
+    @Operation(summary="Deletes a product by its ID.")
     public ResponseEntity<Void> deleteProduct(@PathVariable(name = "id") Long id) {
         Product product = productRepository.findById(id).orElse(null);
         if (product == null)

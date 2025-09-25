@@ -15,15 +15,19 @@ import com.serghini.store.services.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import lombok.AllArgsConstructor;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @AllArgsConstructor
+@Tag(name="Orders", description="Operations related to customer orders")
 public class OrderController {
     private final AuthService authService;
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
 
     @GetMapping("/orders")
+    @Operation(summary="Retrieves a list of all orders for the authenticated user.")
     public List<OrderDto>   getAllOrders() {
         User user = authService.getCurrentUser();
         return orderRepository.findAllByCustomer(user)
@@ -32,6 +36,7 @@ public class OrderController {
     }
 
     @GetMapping("/orders/{orderId}")
+    @Operation(summary="Retrieves the details of a specific order by its ID.")
     public ResponseEntity<OrderDto> getOrderById(@PathVariable("orderId") Long orderId) {
         var order = orderRepository.getOrderWithItems(orderId).orElseThrow(OrderNotFoundException::new);
         var user = authService.getCurrentUser();

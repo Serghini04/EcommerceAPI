@@ -30,11 +30,12 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name="Cart")
+@Tag(name="Carts", description="Operations related to shopping carts")
 public class CartController {
     private final CartService cartService;
 
     @PostMapping("/carts")
+    @Operation(summary="Creates a new shopping cart.")
     public ResponseEntity<CartDto> createCart(UriComponentsBuilder uriBuilder) {
         CartDto cartDto = cartService.createCart();
         var uri = uriBuilder.path("/carts/{id}").buildAndExpand(cartDto.getId()).toUri();
@@ -49,6 +50,7 @@ public class CartController {
     }
 
     @PutMapping("/carts/{cartId}/items/{productId}")
+    @Operation(summary="Updates the quantity of a specific product in the cart.")
     public ResponseEntity<CartItemDto> updateItem(@PathVariable UUID cartId, @PathVariable Long productId, @Valid @RequestBody UpdateCartItemRequest request) {
         CartItemDto item = cartService.updateItem(cartId, productId, request.getQuantity());
         return ResponseEntity.ok(item);
@@ -56,17 +58,20 @@ public class CartController {
     
 
     @GetMapping("/carts")
+    @Operation(summary="Retrieves all shopping carts.")
     public ResponseEntity<List<CartDto>> getCarts() {
         return ResponseEntity.ok(cartService.getCarts());
     }
 
     @GetMapping("/carts/{cartId}")
+    @Operation(summary="Retrieves a specific cart by its ID.")
     public ResponseEntity<CartDto> getCart(@PathVariable UUID cartId) {
         var cartDto = cartService.getCart(cartId);
         return ResponseEntity.ok(cartDto);
     }
 
     @DeleteMapping("/carts/{cartId}/items")
+    @Operation(summary="Removes all items from the specified cart.")
     public ResponseEntity<Void> removeItem(@PathVariable UUID cartId) {
         cartService.removeItems(cartId);
         return ResponseEntity.noContent().build();

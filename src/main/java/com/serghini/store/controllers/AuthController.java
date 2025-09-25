@@ -23,9 +23,12 @@ import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 
 @AllArgsConstructor
 @RestController
+@Tag(name="Authentication", description="Operations related to user authentication")
 public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -34,6 +37,7 @@ public class AuthController {
     private final UserMapper userMapper;
 
     @GetMapping("/auth/me")
+    @Operation(summary="Retrieves information about the currently authenticated user.")
     public ResponseEntity<UserDto> me() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         var id = (String) authentication.getPrincipal();
@@ -44,6 +48,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/login")
+    @Operation(summary="Authenticates a user and returns a JWT access token.")
     public ResponseEntity<JwtResponse> login(@Validated @RequestBody AuthDto request, HttpServletResponse response) {
         var user = userRepository.findFirstByEmail(request.getEmail()).orElse(null);
         if (user != null && passwordEncoder.matches(request.getPassword(), user.getPassword())){
@@ -61,6 +66,7 @@ public class AuthController {
     }
 
     @PostMapping("auth/refresh")
+    @Operation(summary="Refreshes the JWT access token using a valid refresh token.")
     public ResponseEntity<JwtResponse> refresh(@CookieValue(value="refreshToken") String refreshToken) { 
         
         var jwt = jwtService.parseToken(refreshToken);

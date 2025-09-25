@@ -17,6 +17,6 @@ stripe:
   secretKey: ${STRIPE_API_KEY}
 
 server:
-  port: 9999
+  port: 8080
 
 websiteUrl: http://localhost:3000

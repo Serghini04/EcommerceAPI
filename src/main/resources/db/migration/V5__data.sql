@@ -15,5 +15,4 @@ INSERT INTO users (id, name, email, password, role) VALUES
 (2, 'Mehdi', 'm.serghini@edu.com', '$2a$10$lKGBH1.AqHjH.NEg9OY5N.cjkRyF9S9IaDKeuRbguUXk6McROF.Em', 'USER');
 
 # Carts:
-INSERT INTO carts (id, date_created) VALUES 
-('�O?H˳���;g', '2025-09-02');
+INSERT INTO carts ( date_created) VALUES ('2025-09-02');
