@@ -380,7 +380,7 @@ DELETE /carts/{cartId}/items      # Clear entire cart
 </div>
 
 <div align="center">
-  <img src="imgs/item cart req+res.png" alt="postman add item to the cart req + res" width="700">
+  <img src="imgs/item req+res.png" alt="postman add item to the cart req + res" width="700">
 </div>
 
 
