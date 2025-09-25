@@ -1,1 +1,0 @@
-ALTER TABLE orders ADD COLUMN order_status VARCHAR(20) DEFAULT 'PENDING' NOT NULL AFTER customer_id;
