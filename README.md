@@ -1,3 +1,28 @@
+# 🗄️ Database Schema
+
+```mermaid
+erDiagram
+	USER ||--o{ ORDER : places
+	USER ||--o{ CART : owns
+	USER ||--o{ ADDRESS : has
+	USER ||--o{ MESSAGE : sends
+
+	PRODUCT ||--o{ ORDER_ITEM : included_in
+	PRODUCT ||--o{ CART_ITEM : in_cart
+
+	ORDER ||--o{ ORDER_ITEM : contains
+	ORDER ||--o{ PAYMENT : paid_by
+
+	CART ||--o{ CART_ITEM : contains
+
+	ORDER_ITEM }|..|{ CART_ITEM : related_to
+
+	ADDRESS }|..|{ USER : belongs_to
+
+	MESSAGE }|..|{ USER : belongs_to
+
+	PAYMENT }|..|{ ORDER : for
+```
 # 🏰 Architecture
 
 ```mermaid
