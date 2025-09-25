@@ -24,6 +24,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/store_api?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: MyPassword!
+      STRIPE_WEBHOOK_SECRET: whsec_xxx
     ports:
       - "8080:8080"
 volumes:

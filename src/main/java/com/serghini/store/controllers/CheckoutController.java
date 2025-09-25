@@ -20,13 +20,16 @@ import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
 
 @RestController
-@AllArgsConstructor
 @Tag(name="Checkout", description="Operations related to the checkout process")
 public class CheckoutController {
-    private CheckoutService checkoutService;
+    private final CheckoutService checkoutService;
 
     @Value("${STRIPE_WEBHOOK_SECRET}")
     private String endpointSecret;
+
+    public CheckoutController(CheckoutService checkoutService) {
+        this.checkoutService = checkoutService;
+    }
 
     @PostMapping("/checkout")
     @Operation(summary = "Process checkout for a cart", description = "Processes the checkout for the specified cart and returns the order details.")
