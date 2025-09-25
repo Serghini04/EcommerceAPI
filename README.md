@@ -24,6 +24,10 @@
 
 EcommerceAPI is a **production-ready** backend platform built with enterprise-grade architecture. Unlike basic e-commerce solutions, this API provides advanced features like **UUID-based cart security**, **comprehensive order management**, and **seamless Stripe integration** - all wrapped in a clean, maintainable codebase.
 
+<div align="center">
+  <img src="imgs/projectFont.png" alt="Intro Image" width="700">
+</div>
+
 ### 🎯 Built for Real Business Needs
 - **UUID-Based Security** with cryptographically secure cart identification
 - **Enterprise Authentication** with JWT tokens and refresh mechanisms  
@@ -314,6 +318,10 @@ make up                # Start everything
 ```
 
 - **API Playground**: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+<div align="center">
+  <img src="imgs/OpenAPI.png" alt="Image of Swagger" width="900">
+</div>
+
 - **Health Check**: [http://localhost:8080/actuator/health](http://localhost:8080/actuator/health)
 - **Database**: `localhost:3306` (see `.env` for credentials)
 
@@ -327,6 +335,9 @@ POST /auth/login                   # User authentication & JWT token
 POST /auth/refresh                 # Refresh JWT access token
 GET  /auth/me                      # Get current user profile
 ```
+<div align="center">
+  <img src="imgs/auth Req+Res.png" alt="postman auth req + res" width="700">
+</div>
 
 ### 👥 User Management
 ```http
@@ -338,6 +349,10 @@ DELETE /users/{id}                # Delete user account [ADMIN]
 POST   /users/{id}/change-password # Change user password
 ```
 
+<div align="center">
+  <img src="imgs/users req+res.png" alt="postman users req + res" width="700">
+</div>
+
 ### 🛍️ Product Catalog Management
 ```http
 GET    /products                  # Browse products (filter by category)
@@ -346,6 +361,9 @@ POST   /products                  # Add new products [ADMIN]
 PUT    /products/{id}             # Update product info [ADMIN]
 DELETE /products/{id}             # Remove products [ADMIN]
 ```
+<div align="center">
+  <img src="imgs/product Req+Res.png" alt="postman product req + res" width="700">
+</div>
 
 ### 🛒 Advanced Cart System
 ```http
@@ -357,10 +375,24 @@ PUT    /carts/{cartId}/items/{productId} # Update item quantity
 DELETE /carts/{cartId}/items      # Clear entire cart
 ```
 
+<div align="center">
+  <img src="imgs/create cart req+res.png" alt="postman create cart req + res" width="700">
+</div>
+
+<div align="center">
+  <img src="imgs/item cart req+res.png" alt="postman add item to the cart req + res" width="700">
+</div>
+
+
 ### 💳 Seamless Checkout & Payments
 ```http
 POST   /checkout                  # Create Stripe payment session
 ```
+
+<div align="center">
+  <img src="imgs/stripe.png" alt="stripe paymant session" width="700">
+</div>
+
 
 ### 📋 Order Management
 ```http
