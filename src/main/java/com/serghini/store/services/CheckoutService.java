@@ -27,6 +27,24 @@ public class CheckoutService {
     private final AuthService authService;
     private final PaymentGateway paymentGateway;
 
+    public void updatePaymentStatus(String paymentIntentId, String status) {
+        // Find the order by paymentIntentId and update its payment status
+        Order order = orderRepository.findByPaymentIntentId(paymentIntentId).orElse(null);
+        if (order != null) {
+            order.setPaymentStatus(status);
+            orderRepository.save(order);
+        }
+    }
+
+    public void updateOrderStatus(String sessionId, String status) {
+        // Find the order by sessionId and update its order status
+        Order order = orderRepository.findBySessionId(sessionId).orElse(null);
+        if (order != null) {
+            order.setOrderStatus(status);
+            orderRepository.save(order);
+        }
+    }
+    
     public CheckoutResponse checkout(UUID cartId) throws PaymentException {
         var cart = cartRepository.findById(cartId).orElse(null);
         if (cart == null)

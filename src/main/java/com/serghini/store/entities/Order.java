@@ -23,6 +23,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+
 @Data
 @Entity
 @Table(name = "orders")
@@ -46,12 +47,39 @@ public class Order {
 
     @Column(name="total_price")
     private BigDecimal  totalPrice;
-    
-     @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch= FetchType.EAGER)
+
+    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch= FetchType.EAGER)
     private Set<OrderItem> items = new LinkedHashSet<>();
 
+    @Column(name = "payment_intent_id")
+    private String paymentIntentId;
 
-    public static Order   fromCart(Cart cart, User customer) {
+    @Column(name = "session_id")
+    private String sessionId;
+
+    @Column(name = "payment_status")
+    private String paymentStatus;
+
+    @Column(name = "order_status")
+    private String orderStatus;
+
+    public void setPaymentIntentId(String paymentIntentId) {
+        this.paymentIntentId = paymentIntentId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public static Order fromCart(Cart cart, User customer) {
         var order = new Order();
         order.setTotalPrice(cart.getTotalPrice());
         order.setStatus(OrderStatus.PENDING);
